@@ -72,18 +72,46 @@ Los proyectos que residen en este dominio (el raíz) son el de Auditorio y el de
 Algunas palabras claves con las que vincular este proyecto son:
 
 + Directorio Activo
-+ Windows Server 
-+ Escritorio remoto
+> Son los términos que utiliza Microsoft para referirse a su implementación de servicio de directorio en una red distribuida de computadores. Utiliza distintos protocolos, principalmente LDAP, DNS, DHCP y Kerberos.
+
++ Windows Server
+> Es el nombre corporativo de una serie de sistemas operativos de servidor producidos por Microsoft
+
+
 + Administrador del servidor
-+ Herramientas del servidor
-+ DNS
-+ Directivas
-+ Propiedades
-+ Powershell
-+ Grupos globales
-+ Grupos locales
-+ Dominios
-+ Unidades Organizativas
+> Es una consola de administración en Windows Server que permite provisionar y manipular remota y localmente las funcionalidades y recursos del Directorio Activo
+
++ DNS (Domain Name System)
+>es un sistema de nomenclatura jerárquico descentralizado para dispositivos conectados a redes IP como Internet o una red privada.
+
++ DHCP (Dynamic Host Configuration Protocol)
+>Es un protocolo que permite que un equipo conectado a una red pueda obtener su configuración en forma dinámica. Sólo habrá que especificarle al equipo, mediante DHCP, que encuentre una dirección IP de manera independiente.
+
++ Directivas 
+> Con ellas podemos administrar virtualmente todo en los sistemas de nuestro entorno, desde el fondo del escritorio hasta qué aplicaciones pueden ejecutarse. Incluyendo no sólo los escritorios cliente sino también los servidores.
+
+
++ Dominio
+>Un dominio de Active Directory es un contenedor lógico utilizado para administrar usuarios, grupos y computadoras entre otros objetos.
+
++ Bosque
+> En Active Directory el bosque (forest) es una colección de uno o más dominios  que comparten una misma estructura lógica, catálogo global, esquema y configuración.
+
++ Árbol
+>Un árbol de dominios (tree) es una colección de uno o más dominios que comparten un espacio de nombre contiguo. Por ejemplo si el primer dominio se llama contoso.com y tiene un subdominio, este sería subdominio.contoso.com.
+
+
++ Grupo global
+>Se usan los grupos con ámbito Global para administrar objetos de directorio que requieran un 
+mantenimiento diario, como las cuentas de usuario y de equipo. Dado que los grupos con ámbito 
+Global no se replican fuera de su propio dominio, las cuentas de un grupo con ámbito Global se 
+pueden cambiar frecuentemente sin generar tráfico de replicación en el catálogo global.
+
++ Grupo local
+>Los grupos con ámbito Local de dominio ayudan a definir y administrar el acceso a los recursos dentro de un dominio único. 
+>
+>Su visivilidad se restringe al dominio donde han sido definidos.
+
 
 
 <br>
@@ -92,6 +120,29 @@ Algunas palabras claves con las que vincular este proyecto son:
 
 ## 2. Situación de la organización
 
+Nuestra organización va a disponer de diez empleados para llevar a cabo cuatro proyectos. Estos proyectos se encuentran divididos entre dos dominios. Cada dominio se encargará de administrar dos proyectos y cinco de los usuarios. Sin embargo los empleados y directores participan en múltiples proyectos ubicados en ambos dominios. 
+> Empleados: Emple1, Emple2, Emple3, Emple4, Emple5, Emple6, Emple7, Emple8, Emple9 y Emple10. 
+
+> Proyectos: Auditorio, Aeropuerto, Centro comercial y Parque.
+
+Estos empleados también estarán sujetos a unos horarios y obligaciones que deberán administrarse correctamente para llevar a cabo los requisitos de la organización.
+
+Sus roles se ven representados en la siguiente tabla:
+
+<div style="display: flex; justify-content: center;">
+<img src="./images/empleados.png">
+</div> 
+
+En la tabla se muestra la divisón de responsabilidades de los empleados en ambos dominios. Cada elemento se establece como:
+- R: Dominio Raíz.
+- I: Dominio de instalaciones.
+- Direc: Director del proyecto.
+- Particip: Participante del proyecto.
+
+Cuando se establezcan los permisos estos roles supondrán la forma de establecer los permisos en base a la jurisdicción de cada tipo de empleado.
+
+También nuestra organización está **sujeta a** una serie de **requisitos** divididos en los distintos ámbitos **( contraseñas, cirectorio privado, proyectos, directores e información compartida )** que se nos establecen een el enunciado. 
+
 
 <br>
 <br>
@@ -99,6 +150,41 @@ Algunas palabras claves con las que vincular este proyecto son:
 
 ## 3. Diseño de la estructura de la organización
 
+Esta práctica se ha desarrollado de forma paralela en dos dominios alojados en diferentes máquinas virtuales, de modo que cada alumno (que ejerce el rol de adminitsrador) deba encargarse individualmente de configurar y gestionar sus recursos para que los empleados puedan operar sin impedimentos en cada uno de 
+los proyectos.
+
+Uno de los dos dominios debe ser la raíz, donde se aloja la base de la organización (que es en el que se centra este informe), el cual denominamos bajo el DN "*dc=asxt09,dc=local*" (asxt09.local).
+> La elaboración del nombre del dominio se compone por:
+>> as (Administración de Sistemas)
+>
+>> XX (Día y turno, en este caso miércoles tarde)
+>
+>> YY (Número del grupo, en este caso el 9)
+>
+>> .local (La segunda componente del DN)    
+
+El otro dominio, es el de instalaciones, cuyo DN es similar pero con la extensión de subdominio *instal* (instal.asxt09.local). Este será hijo del dominio raíz. La siguiente imagen ilustra este bosque.
+
+![imágen del esquema del bosque de la organización](./images/bosque.png)
+
+Que el dominio de instalaciones sea hijo del Raíz no implica que el padre administre ambos. Cada dominio deberá administrarse de manera independiente siendo las jurisdicciones de responsabilidad de los recursos locales a cada uno de ellos.
+
+También se debe distinguir la estructura por sedes, cada una con su raíz, con sus máquinas y sus Administradores. En este caso la de Tenerife, en el dominio raíz hablamos del controlador de dominio *CD1ASXT09*.
+
+<div style="display: flex; justify-content: center;">
+<img src="./images/cd1tenerife.png">
+</div> 
+
+Como se aprecia en la imagen cada controlador del dominio dispondrá de dos interfaces de red para conectarse; una de ellas interna *192.168.150.---* y otra externa *10.6.128.---*. La interna se empleará para comunicar los controladores
+dentro del bosque, mientras que la externa será empleada para conectarse a la red.
+
+Cabe destacar que no se debe confundir el bosque con sus unidades organizativas, las cuales son internas a cada dominio. La siguiente imagen ilustra este concepto:
+
+![imágen dominio-unidades](./images/dominio-ou.png "distinción entre OU y Domain")
+
+**Resumen:**
+
+Nuestro dominio será asxt09.local, bajo el controlador CD1ASXT09, dentro del bosque de la sede de Tenerife. A su vez nuestro dominio contiene la Unidad Organizativa (OU) *Practica_3* donde distinguiremos otras dos OU, *grupos* y *empleados* que contendrán cada una de las entradas de usuarios y grupos respectivamente que iremos creando.
 
 <br>
 <br>
@@ -170,5 +256,7 @@ Algunas palabras claves con las que vincular este proyecto son:
 - [Documento de instalación de Máquina windows en el IAAS](https://docs.google.com/document/d/1a5MTotTzvvbbTr_sxEkYUZFSHWXny6aEAc_uIWfCs3E/edit)
 - [Manual de Active Directory](https://activedirectoryenwindows.blogspot.com/)
 - [Documentación de Windows 10 y Windows Server 2016 para PowerShell](https://docs.microsoft.com/en-us/powershell/windows/get-started?view=win10-ps)
+- [Grupos de Active Directory | Windows Server 2012](https://administracionsistemasoperativos201415.wordpress.com/2015/02/25/grupos-de-active-directory-grupos-predefinidos/)
+- [Conceptos de Active Directory | Exchange](https://aprendiendoexchange.com/conceptos-active-directory)
 - [Tutorial de creación de usuarios en AD mediante PowerShell](https://blog.netwrix.com/2018/06/07/how-to-create-new-active-directory-users-with-powershell/)
 - [Uso de CVS en PowerShell | Documentación de Microsoft](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/import-csv?view=powershell-7)
