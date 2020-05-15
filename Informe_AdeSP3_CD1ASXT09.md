@@ -28,18 +28,17 @@ que se resumirán aquellos aspectos más secundarios o que puedan resultar obvio
 1. [Introducción](#id1)
 2. [Situación de la organización](#id2) 
 3. [Diseño de la estructura de la organización](#id3)
-4. [Creación y adecuación del dominio raíz (CD1ASXT09)](#id4)
-5. [Contenido](#id5)
-    - [Administración de las directivas](#id5_1)
-    - [Administración de los empleados](#id5_2)
-    - [Administración de los grupos](#id5_3)  
-    - [Administración de los prtoyectos](#id5_4)
-    - [Administración de los recursos](#id5_5)
+4. [Desarrollo de los requisitos de la organización](#id4)
+    - [Administración de las directivas](#id4_1)
+    - [Administración de los empleados](#id4_2)
+    - [Administración de los grupos](#id4_3)  
+    - [Administración de los prtoyectos](#id4_4)
+    - [Administración de los recursos](#id4_5)
 
-6. [Script de automatización de nuevos usuarios (parte opcional)](#id6)
-7. [Problemas encontrados](#id7)
-8. [Conclusión](#id8)
-9. [Bibliografía y referencias](#id9)
+5. [Script de automatización de nuevos usuarios (parte opcional)](#id5)
+6. [Problemas encontrados](#id6)
+7. [Conclusión](#id7)
+8. [Bibliografía y referencias](#id8)
 
 ***
 
@@ -190,67 +189,67 @@ Nuestro dominio será asxt09.local, bajo el controlador CD1ASXT09, dentro del bo
 <br>
 <div id="id4"\>
 
-## 4. Creación y adecuación del dominio raíz (CD1ASXT09)
+
+## 4. Desarrollo de los requisitos de la organización
+
+    En este apartado se expondrán los distintos aspectos de la administración del sistema de la organización en base
+    a los requuisitos exigidos por la misma. En este apartado se parte desde el punto en que la instalación y configuración
+    del dominio ha sido realizada según los documentos proporcionados y el Directorio Activo es completamente funcional. 
+    Además de que se ha preparado la máquina para estar conectada por medio de las dos interfaces de red, interna y externa, a la 
+    máquina del dominio de instalaciones y a internet respectivamente.
+
+<br>
+<div id="id4_1"\>
+
+### 4.1. Administración de las directivas
+
+<br>
+<div id="id4_2"\>
+
+### 4.2. Administración de los empleados
+
+<br>
+<div id="id4_3"\>
+
+### 4.3. Administración de los grupos 
+
+<br>
+<div id="id4_4"\>
+
+### 4.4. Administración de los proyectos
+
+<br>
+<div id="id4_5"\>
+
+### 4.5. Administración de los recursos
 
 
 <br>
 <br>
 <div id="id5"\>
 
-## 5. Desarrollo de los requisitos de la organización
-
-<br>
-<div id="id5_1"\>
-
-### 5.1. Administración de las directivas
-
-<br>
-<div id="id5_2"\>
-
-### 5.2. Administración de los empleados
-
-<br>
-<div id="id5_3"\>
-
-### 5.3. Administración de los grupos 
-
-<br>
-<div id="id5_4"\>
-
-### 5.4. Administración de los proyectos
-
-<br>
-<div id="id5_5"\>
-
-### 5.5. Administración de los recursos
+## 5. Script de automatización de nuevos usuarios (parte opcional)
 
 
 <br>
 <br>
 <div id="id6"\>
 
-## 6. Script de automatización de nuevos usuarios (parte opcional)
+## 6. Problemas encontrados
 
 
 <br>
 <br>
 <div id="id7"\>
 
-## 7. Problemas encontrados
+## 7. Conclusión
 
 
 <br>
 <br>
 <div id="id8"\>
 
-## 8. Conclusión
-
-
-<br>
-<br>
-<div id="id9"\>
-
-## 9. Bibliografía y referencias
+## 8. Bibliografía y referencias
 
 - [Documentio de instalación AD-IAAS](https://docs.google.com/document/d/15JZq7p0MvTtbSuf2MSbrIWJU1r4rQ4hbt6SVHWZztfA/edit#heading=h.gjdgxs)
 - [Documento de instalación de Máquina windows en el IAAS](https://docs.google.com/document/d/1a5MTotTzvvbbTr_sxEkYUZFSHWXny6aEAc_uIWfCs3E/edit)
