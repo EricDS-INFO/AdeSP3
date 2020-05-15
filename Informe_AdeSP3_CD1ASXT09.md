@@ -203,6 +203,20 @@ Nuestro dominio será asxt09.local, bajo el controlador CD1ASXT09, dentro del bo
 
 ### 4.1. Administración de las directivas
 
+Las directivas en Active Directory nos permiten establecer unas normas para configurar múltiples aspectos sobre el dominio. En este caso se manipularán directivas especialmente relacionadas con la configuración de seguridad y accesibilidad del dominio por parte de
+los usuarios del mismo. Cabe destacar que hay numerosas directivas para propósitos muy variados, pero se hablarán de las empleadas.
+
+En primera instancia se van a preparar las directivas pertinentes a las contraseñas de los usuarios que creemos en el dominio con el fin de cumplir algunos de los requisitos impuestos por la organización. Ocuparemos en este apartado los siguientes:
+
+- Los usuarios deben cambiar de contraseña cada 3 meses.
+- Los usuarios no pueden cambiar las contraseñas hasta 2 semanas despues de haberla cambiado.
+- No se permiten contraseñas en blanco. Deben tener una longitud mínima de 4 caracteres.
+- La nueva contraseña no puede coincidir con las dos últimas introducidas por el usuario
+- Si se producen 4 intentos fallidos de autenticación en el mismo intervalo de 10 minutos se debe bloquear permanentemente la cuenta.
+
+Para manipular estas directivas debemos abrir la herramienta de 
+
+
 <br>
 <div id="id4_2"\>
 
