@@ -29,11 +29,11 @@ que se resumirán aquellos aspectos más secundarios o que puedan resultar obvio
 2. [Situación de la organización](#id2) 
 3. [Diseño de la estructura de la organización](#id3)
 4. [Desarrollo de los requisitos de la organización](#id4)
-    - [Administración de las directivas](#id4_1)
-    - [Administración de los empleados](#id4_2)
-    - [Administración de los grupos](#id4_3)  
-    - [Administración de los prtoyectos](#id4_4)
-    - [Administración de los recursos](#id4_5)
+    -  [Administración de las directivas](#id4.1)
+    -  [Administración de los empleados](#id4.2)
+    -  [Administración de los grupos](#id4.3)  
+    -  [Administración de los prtoyectos](#id4.4)
+    -  [Administración de los recursos compartidos](#id4.5)
 
 5. [Script de automatización de nuevos usuarios (parte opcional)](#id5)
 6. [Problemas encontrados](#id6)
@@ -192,50 +192,274 @@ Nuestro dominio será asxt09.local, bajo el controlador CD1ASXT09, dentro del bo
 
 ## 4. Desarrollo de los requisitos de la organización
 
-    En este apartado se expondrán los distintos aspectos de la administración del sistema de la organización en base
-    a los requuisitos exigidos por la misma. En este apartado se parte desde el punto en que la instalación y configuración
-    del dominio ha sido realizada según los documentos proporcionados y el Directorio Activo es completamente funcional. 
-    Además de que se ha preparado la máquina para estar conectada por medio de las dos interfaces de red, interna y externa, a la 
-    máquina del dominio de instalaciones y a internet respectivamente.
+    En este apartado se expondrán los distintos aspectos de la administración del sistema 
+    de la organización en basea los requisitos exigidos por la misma. Se parte desde el 
+    punto en que la instalación y configuración del dominio ha sido realizada según los 
+    documentos proporcionados y el Directorio Activo es completamente funcional.
+     
+    Además de que se ha preparado la máquina para estar conectada por medio de las dos interfaces 
+    de red, interna y externa, a la máquina del dominio de instalaciones y a internet respectivamente.
 
 <br>
-<div id="id4_1"\>
+
+<div id="id4.1"\>
 
 ### 4.1. Administración de las directivas
+<br>
+Las directivas en Active Directory nos permiten establecer unas normas para configurar múltiples 
+aspectos sobre el dominio. En este caso se manipularán directivas especialmente relacionadas con 
+la configuración de seguridad y accesibilidad del dominio por parte de
+los usuarios del mismo. Cabe destacar que hay numerosas directivas para propósitos muy variados, 
+pero se hablarán de las empleadas.
 
-Las directivas en Active Directory nos permiten establecer unas normas para configurar múltiples aspectos sobre el dominio. En este caso se manipularán directivas especialmente relacionadas con la configuración de seguridad y accesibilidad del dominio por parte de
-los usuarios del mismo. Cabe destacar que hay numerosas directivas para propósitos muy variados, pero se hablarán de las empleadas.
+En primera instancia se van a preparar las directivas pertinentes a las contraseñas de los 
+usuarios que creemos en el dominio con el fin de cumplir algunos de los requisitos impuestos por 
+la organización. Ocuparemos en este apartado los siguientes:
 
-En primera instancia se van a preparar las directivas pertinentes a las contraseñas de los usuarios que creemos en el dominio con el fin de cumplir algunos de los requisitos impuestos por la organización. Ocuparemos en este apartado los siguientes:
+1. Los usuarios deben cambiar de contraseña cada 3 meses.
+2. Los usuarios no pueden cambiar las contraseñas hasta 2 semanas despues de haberla cambiado.
+3. No se permiten contraseñas en blanco. Deben tener una longitud mínima de 4 caracteres.
+4. La nueva contraseña no puede coincidir con las dos últimas introducidas por el usuario
+5. Si se producen 4 intentos fallidos de autenticación en el mismo intervalo de 10 minutos se debe bloquear permanentemente la cuenta.
 
-- Los usuarios deben cambiar de contraseña cada 3 meses.
-- Los usuarios no pueden cambiar las contraseñas hasta 2 semanas despues de haberla cambiado.
-- No se permiten contraseñas en blanco. Deben tener una longitud mínima de 4 caracteres.
-- La nueva contraseña no puede coincidir con las dos últimas introducidas por el usuario
-- Si se producen 4 intentos fallidos de autenticación en el mismo intervalo de 10 minutos se debe bloquear permanentemente la cuenta.
+Para manipular estas directivas debemos abrir la herramienta de *Administración de direcitas de grupo* presente el panel del *Administrador del servidor*. El siguiente paso es acceder a las directivas que necesitamos, para ello debemos localizarnos en:
 
-Para manipular estas directivas debemos abrir la herramienta de 
+> **Dominios** &#8594; **asxt09.local** &#8594; **Default Domain Policy**
 
+Una vez localizado este archivo debemos editarlo dando *click derecho* y  pulsando  *editar*. En la ventana emergente el siguiente paso es situarnos en:
+
+>**Configuración del equipo** &#8594; **Directivas** &#8594; **Configuración de Windows** &#8594;   **Configuración de seguridad** &#8594; **Directivas de cuenta** &#8594; **Directivas de contraseña**
+
+![imagen de localización de directivas de contraseña](.)
+
+Una vez en esta localización el siguente paso es configurar los atributos de la directiva en base a los requisitos. Empleando la ventana de propiedades de cada uno podremos establecer :
+
+
+- El histroial de contraseñas con el valor 2 para recordarlas y satisfacer así el requisito 4.
+
+![imagen de las propiedades del requisito 4](.)
+
+- Longitud mínima de la contraseña con valor de 4 caracteres para staisfacer el tercer requisito.
+
+
+![imagen de las propiedades del requisito 3](.)
+
+- Vigencia máxima de la contraseña con valor 90 días para satisfacer el primer requisito 
+
+![imagen de las propiedades del requisito 1](.)
+
+- Vigencia mínima de la contraseña con valor de 14 días para cumplir el requisito 2
+
+![imagen de las propiedades del requisito 2](.)
 
 <br>
+Para cumplir un último requisito a los usuarios se les asignará como contraseña su propio nombre de usuario.
+
+Con todo cumplimentado la directiva debería de lucir de forma similar a la siguiente imagen:
+
+![imagen de requisitos de contraseña](.)
+
+<br>
+
+Otras directivas que debemos manipular con las de asignación de derechos de usuario para que estos se puedan conectar desde el escritorio remoto y para permitir el acceso local. Esto también se encuentra detallado en el documento que antecede a la práctica, pero en un resumen global se deben manipular los atributos antes mencionados en la directiva de *Asignación de derechos de usuario* añadiendo a los grupos que queremos que accedan, en nuestro caso un grupo que contenga a los empleados del dominio. Se accede a esta directiva a través de:
+
+>**Configuración del equipo** &#8594; **Directivas** &#8594; **Configuración de Windows** &#8594;   **Configuración de seguridad** &#8594; **Directivas locales** &#8594; **Asignación de derechos de usuario**
+
+<br>
+
 <div id="id4_2"\>
 
 ### 4.2. Administración de los empleados
+<br>
+
+Se van a crear 5 empleados, cada uno de ellos dispondrá de un directorio privado. Se explicará como se lleva a cabo este proceso de manera manual, pero en el [apartado 5](#id5) de este informe se expone el script que permite automatizar el proceso.
+
+Para llevar a cabo la creración de los usuarios debemos emplear la herramienta de Usuarios y equipos de Active Directory, la cual se encuentra trambién en el Administrador del servidor. 
+
+En la ventana de dicha herramienta se nos presentan las distintas entradas de nuestro dominio. Desde aquí podremos crear grupos y usuarios además de unidades organizativas y otras opciones que no conciernen a este apartado.
+
+El primer paso es crear una unidad organizativa con:
+
+>**Click derecho sobre el dominio** &#8594; **Nuevo** &#8594; **Unidad Organizativa**
+
+Aquí crearemos otras dos con el mismo procedimiento para albergar en una los usuarios y en otra los grupos (esto mantendrá las cosas más ordenadas). Es dentro de la unidad organizativa de empleados donde debemos crear los usuarios seleccionando su opción en la barra de opciones superior o con:
+
+>**Click derecho sobre el Empleados** &#8594; **Nuevo** &#8594; **Usuario**
+
+Una vez ejecutemos esa opción debemos introducir los parámetros en la ventana emergente para crear el usuario. Se introducirá un nombre de pila y un nombre de inicio de sesión y en el siguiente apartado una contraseña desmarcando la opción de cambiarla en el siguiente inicio de sesión.
+
+Este proceso se debe repetir para los 5 empleados del dominio bajo la unidad organizativa Empleados y debería quedar algo similar a esto:
+
+![imagen de los usuarios en la unidad organizativa](.)
+
+En cuanto a las propiedades de cada usuario debemos atender a 3 de sus campos especialmente:
+
+- Cuenta: para administrar sus horarios y la fecha de expiración.
+- Perfil: para indicar el script de inicio de sesión y su carpeta particular.
+- Miembro de: para administrar los grupos a los que pertenece el usuario.
+
+El primer campo que vamos a revisar va a ser el de *Cuenta* para hacer cumplir los siguientes requisitos impuestos por la orgaqnización:
+
+- Los empleados del turno de mañana (1,2 y 3 en este dominio) acceden de 08:00 a 15:00 
+- Los empleados del turno de tarde (7 y 8 en este dominio) acceden de 14:00 a 21:00
+- Los empleados 1 y 3 del dominio se contratan temporalmente por 6 meses  
+
+Así pues, en esta pestaña se debe acceder al apartado de *Horas de inicio de sesión* e introducir las franjas correspondientes mediante la herramienta interactriva quedando de la siguiente manera para los empleados 1, 2 y 3:
+
+![imagen de horas de inicio para mañana](.)
+
+y así para los empleados 7 y 8:
+
+![imagen de horas de inicio para tarde](.)
+
+Por último se debe modificar para 1 y 3 la expiración de la cuenta marcando *Fin de:* e introduciendo la fecha de expiración (6 meses desde la creación en nuestro caso).
 
 <br>
+Por otro lado en la pestaña perfil podremos modificar algunos campos que nos servirán en un futuro para compartir recursos al usuario. Aquí indicaremos el nombre del inicio de sesión y su carpeta particular marcando *Conectar:* e indicando el nombre del reecurso compartido así como la unidad donde se va a montar.
+
+Debería quedar como en la imagen siguiente:
+
+![imagen de pestaña perfil](.)
+
+
+
+Por otro lado para la creación de los directorios de cada usuario vamos a crear carpetas en *C:/home* siendo *home* una carpeta creada por nosotros. Se debe crear una por empleado y acto seguido modificar sus propiedades para que solo su propietario y el administrador tengan acceso a ella. De esta manera, por cada directorio personal vamos a modificar los permisos dentro de la ventana de propiedades.
+
+Para modificar los permisos debemos acceder a la pestaña de *Seguridad* donde podremos modificar quien tiene acceso al recurso. Debemos *editar* los permisos y en la ventana emergente agregar al usuario pertinente y eliminar los grupos o usuarios que no nos sean de interés (todos menos el Administrador, los Administradores y el usuario en cuestión). La siguiente imagen ilustra como debería quedar:
+
+![imagen de grupos o usuarios home](.)
+
+
+Una vez hecho esto queda modificar los permisos para que este usuario tenga control total dentro de su directorio excluyendo la eliminación del mismo o la modificación de sus permisos. A esto accedemos mediante el botón de *Opciones avanzadas* de la pestaña *Seguridad*. En la ventana emergente debemos seleccionar al empleado y *Editar* sus permisos avanzados. Deben quedar seleccionados, solo para este directorio, tal y como muestra la imagen:
+
+![imagen de permisos home](.)
+
+
+Tras esto solo quedaría compartir el recurso, pero eso se detalla en una sección futura.
+
+<br>
+
 <div id="id4_3"\>
 
 ### 4.3. Administración de los grupos 
+<br>
+
+De cara a poder asignar permisos a los usuarios en calidad de ejercer distintos roles (*participante o director*) en cada uno de los proyectos se deben crear grupos globales que encapsulen bajo dichos roles a los empleados de cada proyecto de cara a que estos puedan ser accesibles por el dominio de instalaciones. Además se deben crear grupos de caracter local que tendrán la funcionalidad de recopilar los grupos globales de cada uno dee los proyectos y proporcionar permisos a los empleados de una manera más controlada.
+
+El siguiente esquema ilustra esta estructura:
+
+![imagen de estructura de grupos](.)
+
+Los grupos se van a crear siguiendo el mismo proceso empleado en el apartado anterior con los usuarios pero creando grupos y bajo la Unidad Organizativa Grupos. En este caso debemos atender al ámbito que pertenecen (*global* *local*), que sean de seguridad y que cumplan una nomenclatura que permia identificar su tipo
+(*SG* o *SL*), su rol (*Participantes* o *Directores*) ,su proyecto si lo requiere (*Aeropuerto*) y su dominio (*R* o *I*). de esta manera un posible nombre es **SG_ParticipantesAeropuerto_R** indicando que es un grupo de Seguridad Global para los 
+Participantes del proyecto Aeropuerto del dominio Raíz.  En el caso de los grupos locales se añade a la nomenclatura los permisos que proporciona estar en ese grupo.
+
+Aquí se puede apreciar como debería quedar la Unidad Organizativa tras añadir todos los grupos de los proyectos:
+
+![imagen de la OU grupos](.)
+
+Una vez hecho esto podrémos asignar los miembros de cada grupo en base a la tabla de la [sección 3 del informe](#id3) mediante la pestaña de miembros en las propiedades de cada grupo.
+En los grupos globales se añadirán los empleados correspondientes y en los  grupos locales los grupos globales a los que se les asignará el permiso que atañe al rol que describe el grupo, para luego administrar su acceso en el directorio de cada proyecto.
 
 <br>
+
 <div id="id4_4"\>
 
 ### 4.4. Administración de los proyectos
+<br>
+
+Los proyectos van a tener cada uno un directorio donde se manipulará toda la información por los empleados. Cada uno de los directorios va a "colgar" de un dirctorio *Proyectos* que se encuentra en *C:/*. En este caso como estamos en el dominio raíz se crearán los directorios de *Auditorio* y *Aeropuerto*. Las operaciones que se van a realizar en este apartado corresponden mayoritariamente a los permisos de cada rol.
+
+En primer lugar, para los directores de cada proyecto se deben administrar, en las propiedades del directorio (tal y como se ha hecho para los directorios personales), los permisos.  En este caso debemos añadir los grupos locales de control total (**SL_CtrlTotal_[proyecto]_R**) a cada proyecto de manera que los directores tengan todos los permisos posibles para la creación de carpetas y ficheros, su modificación y su borrado. De esta manera accederemos nuevamente las propiedades del directorio para administrar los permisos en la pestaña de *Seguridad* es aquí donde debemos cuidar de que solo estén incluidos los grupos de seguridad local y los administradores. Siendo esto así procedemos a cambiar los permisos en la ventana de *Configuración de seguridad avanzada* la misma que se ha usado anteriormente.
+
+Se deben establecer los permisos para esta y sus subcarpetas tal y como muestra la imagen:
+
+![imagen de permisos de CT de Directores](.)
+
+Para los directores que no supervisan un proyecto deben tener permisos de lectura en el resto, por ello añadiremos también el grupo local para los permisos de solo lectura (**SL_Lectura_[proyecto]_R**), siguiendo el mismo procedimiento antes mencionado pero con los permisos avanzados tal y como los muestra la siguiente imagen:
+
+![imagen de permisos de RO de Directores](.)
+
+
+<br>
+
+También habrán grupos locales para administrar los permisos de los empleados participantes  de los proyectos de manera que estos puedan solo leer y modificar archivos que ya hayan sido creados por los directores de cada proyecto. Para facilitar la gestión de estos permisos se crearán dos grupos locales uno para los permisos de solo lectura (**SL_LecturaParticipantes_[proyecto]_R**) y otro para la modificación de archivos (**SL_ModificarArchivos_[proyecto]_R**).
+
+El grupo local que corresponde a los permisos de lectura debe tener los permisos del directorio tal y como se muestra en la siguiente imagen:
+
+
+![imagen de permisos de RO de Participantes](.)
+
+Y de la siguiente manera para el de los permisos de modificación:
+
+
+![imagen de permisos de Mod de Participantes](.)
+
+Cabe destacar en este último que solo se han provisto de los permisos de control total (salvo eliminar y cambiar permisos) en los archivos del directorio permitiendo así solamente escribir datos y anexar datos, lo que lleva a la modificación de archivos ya existentes.
+<br>
+
+Por último se solicita que en el dominio raíz haya un directorio común que cuelga de la carpeta *Info* al que denominaremos *Privado*. A este directorio común solo van a poder acceder los directores de la organización.
+
+El primer paso es crear el directorio *Info* y dentro de este el directorio *Privado*
+al cual le modificaremos las propiedades de seguirdad para añadir de forma exclusiva los grupos globales de los directores de todos los proyectos de ambos dominios; eliminando además aquellos grupos que no correspondan a funciones del sistema o Administradores.
+
+a estos grupos globales se les asigna control total aplicado a solo este directorio, salvo la eliminación y el cambio de permisos del directorio claro está. Nuevamente todo esto se hace dentro de la configuración avanzada empleada hasta ahora y con los permisos avanzados.
+
+Debería quedar acorde a la siguiente imagen una vez realizada la modificación:
+
+![permisos GG Privado](.)
 
 <br>
 <div id="id4_5"\>
 
-### 4.5. Administración de los recursos
+### 4.5. Administración de los recursos compartidos
+<br>
+
+Dado que cada usuario debe poder acceder automáticamente a los proyectos y a su directorio a través de las unidades montadas en el equipo se deben compartir todos los recursos que se pretendan hacer accesibles por esta vía.
+
+Comenzando por el directorio personal se puede tomar una visión general de lo que hay que hacer con todos los directorios ( o ficheros) que se quieran compartir. Para ello hay que acceder a la ventana de propiedades del directorio personal y abrir la pestaña *Compartir*
+
+![imagen de pestaña compartir](.)
+
+Una vez ahí lo que sigue es abrir el *Uso compartido avanzado* y proporcionarle un nombre
+
+![imagen de uso compartido avanzado](.)
+
+Tras esto debemos acceder a la ventana de *Permisos* y ahí elimirar el grupo *Todos* para despues añadir al usuario al que pretendemos compartirlo. Debemos asignar los permisos de *Control total*, sin embargo luego se aplicarán los permisos más restrictivos que hayamos asigando en el directorio al usuario.
+
+![imagen de uso compartido avanzado](.)
+
+Lo único que restaría es, en las propiedades del usuario, introducir el nombre del recurso compartido para el acceso a la carpeta particular.
+
+![imagen de carpeta particular](.)
+
+
+Este proceso se hace de manera similar para el resto de recursos variando los grupos o usuarios a los que se comparte y su nombre.
+
+
+Para el uso automático a través de las unidades p:, q: ... de los proyectos se podría emplear el comando
+
+```bat
+net use [unidad]: \\CD1ASXT09.astx09.local\nombre\de\recurso
+```
+
+Sin embargo será más eficiente disponer de un script de inicio de sesión que ejecute esto automáticamente para cada usuario. El script sería de la siguiente manera si queremos compartir los proyectos:
+
+```bat
+::Proyectos
+net use p: \\CD1ASXT09.astx09.local\Auditorio
+net use q: \\CD1ASXT09.astx09.local\Aeropuerto
+net use r: \\CD1INSTALASXT09.instal.astx09.local\Parque
+net use s: \\CD1INSTALASXT09.instal.astx09.local\CentroComercial
+
+::Directorios comunes
+net use t: \\CD1ASXT09.astx09.local\Privado
+net use v: \\CD1INSTALASXT09.instal.astx09.local\Publico
+
+
+```
+
+Debemos guardar el script en *C:\Windows\SYSVOL\Sysvol\asxt09.local\scripts* para que lo podamos incluir únicamente con el nombre en la ventana de propiedades de cada usuario, en la pestaña de *Perfil* en el apartado *script de inicio de sesión*
 
 
 <br>
