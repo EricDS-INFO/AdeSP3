@@ -456,7 +456,6 @@ net use s: \\CD1INSTALASXT09.instal.astx09.local\CentroComercial
 net use t: \\CD1ASXT09.astx09.local\Privado
 net use v: \\CD1INSTALASXT09.instal.astx09.local\Publico
 
-
 ```
 
 Debemos guardar el script en *C:\Windows\SYSVOL\Sysvol\asxt09.local\scripts* para que lo podamos incluir únicamente con el nombre en la ventana de propiedades de cada usuario, en la pestaña de *Perfil* en el apartado *script de inicio de sesión*
@@ -468,24 +467,96 @@ Debemos guardar el script en *C:\Windows\SYSVOL\Sysvol\asxt09.local\scripts* par
 
 ## 5. Script de automatización de nuevos usuarios (parte opcional)
 
+Como tarea opcional se ha escogido programar un script de PowerShell que automatice la creación de nuevos usuarios por medio de la lecutra de un fichero CSV. Un fichero CSV  no es más que un formato de texto que separa los elementos por un *token* que se emplea para parsear la primera fila a modo array de tipos de variable y las siguientes filas como valores contenidos en cada uno de esos tipos. de modo que de una tabla se puede extraer una estructura que manipularemos con programación
+
+
+A continuación se expone paso a paso como funciona
+
+
+El primer paso es inicializar algunas variables globales que vamos a necesitar como son el *Distinguished Name* de la Unidad Organizativa donde vamos a meter al usuario, la ruta a la carpeta contenedora de los CSV y la instancia de los usuarios a crear em el CSV. Para este último se  emplea la sentencia en PowerShell *Import-Csv* la cual nos lee y formatea el csv de la ruta que se le indica a continuación
+
+```ps
+
+#Distinguished Name bajo el que se situará al usuario (En este caso los empleados de Práctica 3)
+$path = "OU=Empleados,OU=Practica_3,DC=asxt09,DC=local"
+
+#Ruta de los csv
+$csvPath = "C:\Windows\SYSVOL\sysvol\asxt09.local\scripts"
+
+#Importamos las entradas del fichero CSV
+$USERS = Import-Csv $csvPath\users.csv 
+
+```
+
+Una vez almacenado el contenido del CSV tenemos todos los datosnecesarios para crear un usuario. Sencillamente debemos iterar con un *foreach* que toma de manera implícita el número de entidades y nos permite iterar sus elementos. Dentro del bucle lo que debemos hacer es tomar todas las variables que vamos a emplear y a continuación comprobar si el usuario existe, de ser así se pasa al siguente apartado
+
+
+```ps
+
+#Este proceso se repite por cada una de las entradas
+foreach ($USER in $USERS)
+{
+
+    #Almacenamos en variables los valores de cada entrada
+    $NAME = $USER.Name
+    $PASS = $USER.Pass
+    $GFILE = $USER.GroupFile
+
+    #Comprobamos la existencia del usuario antes de crearlo (Enviando un mensaje de aviso de ser así)
+    if (Get-ADUser -F {SamAccountName -eq $NAME})
+    {
+        Write-Warning "El empleado $NAME ya existe en el proyecto"
+    }
+    else
+    {
+
+```
+
+Una vez pasado el filtro se ejecuta *New-ADUser* (Nuevo usuario de Active Directory) pasándole como argumento todas las propiedades que pretendemos configurar:
+- Nombre
+- Nombre de usuario
+- Contraseña (esta debe convertirse a un *Secure String*)
+- La OU en la que se encuentra
+- Si el usuario está activado
+- No cambiar la contraseña en el inicio de sesión
+- El script de inicio de sesión
+
+```ps
+    #Se crea el usuario con los argumentos adecuados para insertarlo en el sistema
+        New-ADUser 
+        -Name $NAME 
+        -GivenName $NAME 
+        -SamAccountName $NAME 
+        -AccountPassword (ConvertTo-SecureString $PASS -AsPlainText -Force) 
+        -Path $path 
+        -Enabled $true 
+        -ChangePasswordAtLogon $false 
+        -ScriptPath "mapping.bat"
+```
+
+El último paso del script es introducir los grupos globales a los que pertenece el usuario. Esto se hace mediante otro csv contenido en este, para ello debemos hacer que una de las columnas sea el nombre del CSV que contiene sus grupos. Estos se leerán como se ha hecho con el usuario y se asignarán empleando la sentencia *Add-ADGroupMember*. Cabe destacar que el CSV debe estar en la misma ubicación que el de los usuarios y que deben introducirse grupos ya existentes que a la fuerza sean globales.
+
+```ps
+    #Para cada usuario importamos el CSV que contiene la lista de grupos globales del usuario
+        $GROUPS = Import-Csv $csvPath\$GFILE
+
+
+    #Por cada una de las entradas de los grupos asignamos a cada usuario a su lista correspondiente 
+        foreach($GROUP in $GROUPS)
+        {
+            $GNAME = $GROUP.GlobalGroup
+            Add-ADGroupMember 
+            -Identity $GNAME 
+            -Members $NAME
+        }
+     }
+
+```
+
 
 <br>
 <br>
 <div id="id6"\>
-
-## 6. Problemas encontrados
-
-
-<br>
-<br>
-<div id="id7"\>
-
-## 7. Conclusión
-
-
-<br>
-<br>
-<div id="id8"\>
 
 ## 8. Bibliografía y referencias
 
