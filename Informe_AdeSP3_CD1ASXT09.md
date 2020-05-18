@@ -23,22 +23,20 @@ que se resumirán aquellos aspectos más secundarios o que puedan resultar obvio
 
 ***
 
-**Índice**
+## **Índice**
 
-1. [Introducción](#id1)
-2. [Situación de la organización](#id2) 
-3. [Diseño de la estructura de la organización](#id3)
-4. [Desarrollo de los requisitos de la organización](#id4)
-    -  [Administración de las directivas](#id4.1)
-    -  [Administración de los empleados](#id4.2)
-    -  [Administración de los grupos](#id4.3)  
-    -  [Administración de los prtoyectos](#id4.4)
-    -  [Administración de los recursos compartidos](#id4.5)
-
-5. [Script de automatización de nuevos usuarios (parte opcional)](#id5)
-6. [Problemas encontrados](#id6)
-7. [Conclusión](#id7)
-8. [Bibliografía y referencias](#id8)
+## 1. [Introducción](#id1) · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · 
+## 2. [Situación de la organización](#id2) · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · 
+## 3. [Diseño de la estructura de la organización](#id3)  · · · · · · · · · · · · · · · · · · · · · · · 
+## 4. [Desarrollo de los requisitos de la organización](#id4) · · · · · · · · · · · · · · · · · · ·
+-  ### [Administración de las directivas](#sub1)
+-  ### [Administración de los empleados](#sub2)
+-  ### [Administración de los grupos](#sub3)  
+-  ### [Administración de los prtoyectos](#sub4)
+-  ### [Administración de los recursos compartidos](#sub5)
+## 
+## 5. [Script de automatización de nuevos usuarios (parte opcional)](#id5) · · · · ·
+## 6. [Bibliografía y referencias](#id6) · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · 
 
 ***
 
@@ -202,7 +200,7 @@ Nuestro dominio será asxt09.local, bajo el controlador CD1ASXT09, dentro del bo
 
 <br>
 
-<div id="id4.1"\>
+<div id="sub1"\>
 
 ### 4.1. Administración de las directivas
 <br>
@@ -230,34 +228,31 @@ Una vez localizado este archivo debemos editarlo dando *click derecho* y  pulsan
 
 >**Configuración del equipo** &#8594; **Directivas** &#8594; **Configuración de Windows** &#8594;   **Configuración de seguridad** &#8594; **Directivas de cuenta** &#8594; **Directivas de contraseña**
 
-![imagen de localización de directivas de contraseña](.)
+![imagen de localización de directivas de contraseña](./images/directivas-pass.png)
 
 Una vez en esta localización el siguente paso es configurar los atributos de la directiva en base a los requisitos. Empleando la ventana de propiedades de cada uno podremos establecer :
 
 
 - El histroial de contraseñas con el valor 2 para recordarlas y satisfacer así el requisito 4.
 
-![imagen de las propiedades del requisito 4](.)
+![imagen de las propiedades del requisito 4](./images/recordar-2.png)
 
 - Longitud mínima de la contraseña con valor de 4 caracteres para staisfacer el tercer requisito.
 
 
-![imagen de las propiedades del requisito 3](.)
+![imagen de las propiedades del requisito 3](./images/min-4.png)
 
 - Vigencia máxima de la contraseña con valor 90 días para satisfacer el primer requisito 
 
-![imagen de las propiedades del requisito 1](.)
+![imagen de las propiedades del requisito 1](./images/min-90.png)
 
 - Vigencia mínima de la contraseña con valor de 14 días para cumplir el requisito 2
 
-![imagen de las propiedades del requisito 2](.)
+![imagen de las propiedades del requisito 2](./images/min-14.png)
 
 <br>
 Para cumplir un último requisito a los usuarios se les asignará como contraseña su propio nombre de usuario.
 
-Con todo cumplimentado la directiva debería de lucir de forma similar a la siguiente imagen:
-
-![imagen de requisitos de contraseña](.)
 
 <br>
 
@@ -267,7 +262,7 @@ Otras directivas que debemos manipular con las de asignación de derechos de usu
 
 <br>
 
-<div id="id4_2"\>
+<div id="sub2"\>
 
 ### 4.2. Administración de los empleados
 <br>
@@ -290,7 +285,7 @@ Una vez ejecutemos esa opción debemos introducir los parámetros en la ventana 
 
 Este proceso se debe repetir para los 5 empleados del dominio bajo la unidad organizativa Empleados y debería quedar algo similar a esto:
 
-![imagen de los usuarios en la unidad organizativa](.)
+![imagen de los usuarios en la unidad organizativa](./images/users.png)
 
 En cuanto a las propiedades de cada usuario debemos atender a 3 de sus campos especialmente:
 
@@ -306,11 +301,11 @@ El primer campo que vamos a revisar va a ser el de *Cuenta* para hacer cumplir l
 
 Así pues, en esta pestaña se debe acceder al apartado de *Horas de inicio de sesión* e introducir las franjas correspondientes mediante la herramienta interactriva quedando de la siguiente manera para los empleados 1, 2 y 3:
 
-![imagen de horas de inicio para mañana](.)
+![imagen de horas de inicio para mañana](./images/morning.png)
 
 y así para los empleados 7 y 8:
 
-![imagen de horas de inicio para tarde](.)
+![imagen de horas de inicio para tarde](./images/evening.png)
 
 Por último se debe modificar para 1 y 3 la expiración de la cuenta marcando *Fin de:* e introduciendo la fecha de expiración (6 meses desde la creación en nuestro caso).
 
@@ -319,27 +314,27 @@ Por otro lado en la pestaña perfil podremos modificar algunos campos que nos se
 
 Debería quedar como en la imagen siguiente:
 
-![imagen de pestaña perfil](.)
+![imagen de pestaña perfil](./images/resources.png)
 
 
 
-Por otro lado para la creación de los directorios de cada usuario vamos a crear carpetas en *C:/home* siendo *home* una carpeta creada por nosotros. Se debe crear una por empleado y acto seguido modificar sus propiedades para que solo su propietario y el administrador tengan acceso a ella. De esta manera, por cada directorio personal vamos a modificar los permisos dentro de la ventana de propiedades.
+Por otro lado para la creación de los directorios de cada usuario vamos a crear carpetas en *C:/home*, siendo *home* una carpeta creada por nosotros. Se debe crear una por empleado y acto seguido modificar sus propiedades para que solo su propietario y el administrador tengan acceso a ella. De esta manera, por cada directorio personal vamos a modificar los permisos dentro de la ventana de propiedades.
 
 Para modificar los permisos debemos acceder a la pestaña de *Seguridad* donde podremos modificar quien tiene acceso al recurso. Debemos *editar* los permisos y en la ventana emergente agregar al usuario pertinente y eliminar los grupos o usuarios que no nos sean de interés (todos menos el Administrador, los Administradores y el usuario en cuestión). La siguiente imagen ilustra como debería quedar:
 
-![imagen de grupos o usuarios home](.)
+![imagen de grupos o usuarios home](./images/perms1.png)
 
 
 Una vez hecho esto queda modificar los permisos para que este usuario tenga control total dentro de su directorio excluyendo la eliminación del mismo o la modificación de sus permisos. A esto accedemos mediante el botón de *Opciones avanzadas* de la pestaña *Seguridad*. En la ventana emergente debemos seleccionar al empleado y *Editar* sus permisos avanzados. Deben quedar seleccionados, solo para este directorio, tal y como muestra la imagen:
 
-![imagen de permisos home](.)
+![imagen de permisos home](./images/perms2.png)
 
 
 Tras esto solo quedaría compartir el recurso, pero eso se detalla en una sección futura.
 
 <br>
 
-<div id="id4_3"\>
+<div id="sub3"\>
 
 ### 4.3. Administración de los grupos 
 <br>
@@ -348,7 +343,7 @@ De cara a poder asignar permisos a los usuarios en calidad de ejercer distintos 
 
 El siguiente esquema ilustra esta estructura:
 
-![imagen de estructura de grupos](.)
+![imagen de estructura de grupos](./images/group-diagram.png)
 
 Los grupos se van a crear siguiendo el mismo proceso empleado en el apartado anterior con los usuarios pero creando grupos y bajo la Unidad Organizativa Grupos. En este caso debemos atender al ámbito que pertenecen (*global* *local*), que sean de seguridad y que cumplan una nomenclatura que permia identificar su tipo
 (*SG* o *SL*), su rol (*Participantes* o *Directores*) ,su proyecto si lo requiere (*Aeropuerto*) y su dominio (*R* o *I*). de esta manera un posible nombre es **SG_ParticipantesAeropuerto_R** indicando que es un grupo de Seguridad Global para los 
@@ -356,14 +351,14 @@ Participantes del proyecto Aeropuerto del dominio Raíz.  En el caso de los grup
 
 Aquí se puede apreciar como debería quedar la Unidad Organizativa tras añadir todos los grupos de los proyectos:
 
-![imagen de la OU grupos](.)
+![imagen de la OU grupos](./images/ou-groups.png)
 
 Una vez hecho esto podrémos asignar los miembros de cada grupo en base a la tabla de la [sección 3 del informe](#id3) mediante la pestaña de miembros en las propiedades de cada grupo.
 En los grupos globales se añadirán los empleados correspondientes y en los  grupos locales los grupos globales a los que se les asignará el permiso que atañe al rol que describe el grupo, para luego administrar su acceso en el directorio de cada proyecto.
 
 <br>
 
-<div id="id4_4"\>
+<div id="sub4"\>
 
 ### 4.4. Administración de los proyectos
 <br>
@@ -374,11 +369,11 @@ En primer lugar, para los directores de cada proyecto se deben administrar, en l
 
 Se deben establecer los permisos para esta y sus subcarpetas tal y como muestra la imagen:
 
-![imagen de permisos de CT de Directores](.)
+![imagen de permisos de CT de Directores](./images/perms3.png)
 
 Para los directores que no supervisan un proyecto deben tener permisos de lectura en el resto, por ello añadiremos también el grupo local para los permisos de solo lectura (**SL_Lectura_[proyecto]_R**), siguiendo el mismo procedimiento antes mencionado pero con los permisos avanzados tal y como los muestra la siguiente imagen:
 
-![imagen de permisos de RO de Directores](.)
+![imagen de permisos de RO de Directores](./images/perms4.png)
 
 
 <br>
@@ -388,12 +383,12 @@ También habrán grupos locales para administrar los permisos de los empleados p
 El grupo local que corresponde a los permisos de lectura debe tener los permisos del directorio tal y como se muestra en la siguiente imagen:
 
 
-![imagen de permisos de RO de Participantes](.)
+![imagen de permisos de RO de Participantes](./images/perms5.png)
 
 Y de la siguiente manera para el de los permisos de modificación:
 
 
-![imagen de permisos de Mod de Participantes](.)
+![imagen de permisos de Mod de Participantes](./images/perms6.png)
 
 Cabe destacar en este último que solo se han provisto de los permisos de control total (salvo eliminar y cambiar permisos) en los archivos del directorio permitiendo así solamente escribir datos y anexar datos, lo que lleva a la modificación de archivos ya existentes.
 <br>
@@ -407,10 +402,10 @@ a estos grupos globales se les asigna control total aplicado a solo este directo
 
 Debería quedar acorde a la siguiente imagen una vez realizada la modificación:
 
-![permisos GG Privado](.)
+![permisos GG Privado](./images/perms7.png)
 
 <br>
-<div id="id4_5"\>
+<div id="sub5"\>
 
 ### 4.5. Administración de los recursos compartidos
 <br>
@@ -419,20 +414,17 @@ Dado que cada usuario debe poder acceder automáticamente a los proyectos y a su
 
 Comenzando por el directorio personal se puede tomar una visión general de lo que hay que hacer con todos los directorios ( o ficheros) que se quieran compartir. Para ello hay que acceder a la ventana de propiedades del directorio personal y abrir la pestaña *Compartir*
 
-![imagen de pestaña compartir](.)
+![imagen de pestaña compartir](./images/share1.png)
 
 Una vez ahí lo que sigue es abrir el *Uso compartido avanzado* y proporcionarle un nombre
 
-![imagen de uso compartido avanzado](.)
+![imagen de uso compartido avanzado](./images/share2.png)
 
-Tras esto debemos acceder a la ventana de *Permisos* y ahí elimirar el grupo *Todos* para despues añadir al usuario al que pretendemos compartirlo. Debemos asignar los permisos de *Control total*, sin embargo luego se aplicarán los permisos más restrictivos que hayamos asigando en el directorio al usuario.
+Tras esto debemos acceder a la ventana de *Permisos* y ahí eliminar el grupo *Todos* para despues añadir al usuario al que pretendemos compartirlo. Debemos asignar los permisos de *Control total*, sin embargo luego se aplicarán los permisos más restrictivos que hayamos asigando en el directorio al usuario.
 
-![imagen de uso compartido avanzado](.)
+![imagen de permisos en compartido](./images/share3.png)
 
 Lo único que restaría es, en las propiedades del usuario, introducir el nombre del recurso compartido para el acceso a la carpeta particular.
-
-![imagen de carpeta particular](.)
-
 
 Este proceso se hace de manera similar para el resto de recursos variando los grupos o usuarios a los que se comparte y su nombre.
 
@@ -558,7 +550,7 @@ El último paso del script es introducir los grupos globales a los que pertenece
 <br>
 <div id="id6"\>
 
-## 8. Bibliografía y referencias
+## 6. Bibliografía y referencias
 
 - [Documentio de instalación AD-IAAS](https://docs.google.com/document/d/15JZq7p0MvTtbSuf2MSbrIWJU1r4rQ4hbt6SVHWZztfA/edit#heading=h.gjdgxs)
 - [Documento de instalación de Máquina windows en el IAAS](https://docs.google.com/document/d/1a5MTotTzvvbbTr_sxEkYUZFSHWXny6aEAc_uIWfCs3E/edit)
