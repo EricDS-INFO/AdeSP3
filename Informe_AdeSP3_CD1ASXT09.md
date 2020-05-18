@@ -23,20 +23,20 @@ que se resumirán aquellos aspectos más secundarios o que puedan resultar obvio
  
 ***
  
-## **Índice**
+## **Índice** &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Página:
  
-## 1. [Introducción](#id1) · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-## 2. [Situación de la organización](#id2) · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-## 3. [Diseño de la estructura de la organización](#id3)  · · · · · · · · · · · · · · · · · · · · · · ·
-## 4. [Desarrollo de los requisitos de la organización](#id4) · · · · · · · · · · · · · · · · · · ·
+## 1. [Introducción](#id1) · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · 3
+## 2. [Situación de la organización](#id2) · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · 4
+## 3. [Diseño de la estructura de la organización](#id3)  · · · · · · · · · · · · · · · · · · · · · · · 5
+## 4. [Desarrollo de los requisitos de la organización](#id4) · · · · · · · · · · · · · · · · · · · 7
 - ### [Administración de las directivas](#sub1)
 - ### [Administración de los empleados](#sub2)
 - ### [Administración de los grupos](#sub3) 
 - ### [Administración de los proyectos](#sub4)
 - ### [Administración de los recursos compartidos](#sub5)
 ##
-## 5. [Script de automatización de nuevos usuarios (parte opcional)](#id5) · · · · ·
-## 6. [Bibliografía y referencias](#id6) · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
+## 5. [Script de automatización de nuevos usuarios (parte opcional)](#id5) · · · · · 29
+## 6. [Bibliografía y referencias](#id6) · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · 31
  
 ***
  
